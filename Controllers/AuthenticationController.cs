@@ -14,6 +14,18 @@ namespace CourseManager.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
+        [HttpGet]
+        public IActionResult GetToken()
+        {
+            var token = GenerateToken();
+
+            var returnRes = new
+            {
+                Token = token
+            };
+
+            return Ok(returnRes);
+        }
         private string GenerateToken()
         {
             var handler = new JwtSecurityTokenHandler();
