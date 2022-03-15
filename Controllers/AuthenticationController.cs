@@ -31,7 +31,8 @@ namespace CourseManager.Controllers
         private string GenerateToken()
         {
             IList<Claim> claims = new List<Claim>();
-            claims.Add(new Claim("Nome", "CursoManager"));
+            claims.Add(new Claim("Name", "CourseManager"));
+            claims.Add(new Claim(ClaimTypes.Role, "Admin"));
             
             var handler = new JwtSecurityTokenHandler();
 
