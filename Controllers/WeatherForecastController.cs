@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CourseManager.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -23,6 +25,7 @@ namespace CourseManager.Controllers
             _logger = logger;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
@@ -34,6 +37,12 @@ namespace CourseManager.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpDelete]
+        public IActionResult ProtectedRoute()
+        {
+            return NoContent();
         }
     }
 }
