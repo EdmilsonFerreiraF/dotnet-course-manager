@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace CourseManager
 {
@@ -36,7 +38,12 @@ namespace CourseManager
             })
                 .AddJwtBearer(options =>
                 {
-
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("1234567890QWERTYKQKPEQLW `l^^>:?LÓ´..Ç'")),
+                        ValidAudience = "https://localhost:5001",
+                        ValidIssuer = "CourseManager"
+                    };
                 });
 
             services.AddControllers();

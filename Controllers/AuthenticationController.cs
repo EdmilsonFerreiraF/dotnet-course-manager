@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -28,11 +30,17 @@ namespace CourseManager.Controllers
         }
         private string GenerateToken()
         {
+            IList<Claim> claims = new List<Claim>();
+            claims.Add(new Claim("Nome", "CursoManager"));
+            
             var handler = new JwtSecurityTokenHandler();
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes("1234567890QWERTYKQKPEQLW `l^^>:?LÓ´..Ç'")), SecurityAlgorithms.HmacSha256Signature),
+                Audience = "https://localhost:5001",
+                Issuer = "CourseManager",
+                Subject = new ClaimsIdentity(claims)
             };
 
             SecurityToken token = handler.CreateToken(tokenDescriptor);
