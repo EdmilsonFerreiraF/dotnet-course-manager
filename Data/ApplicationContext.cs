@@ -1,3 +1,5 @@
+using CourseManager.Domain;
+using CourseManager.Data.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace CourseManager.Data
@@ -13,6 +15,7 @@ namespace CourseManager.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new CourseConfiguration().Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
         }
     }
+}

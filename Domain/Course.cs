@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourseManager.Domain
 {
@@ -6,10 +7,10 @@ namespace CourseManager.Domain
     public class Course
     {
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
         [Required]
-        public string title { get; set; }
-        public int duration { get; set; }
-        public string status { get; set; }
+        public string Title { get; set; }
+        public int Duration { get; set; }
+        public string Status { get; set; }
     }
 }
