@@ -9,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using CourseManager.Settings;
 
 namespace CourseManager.Controllers
 {
@@ -16,13 +18,26 @@ namespace CourseManager.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetToken()
+        private readonly JWTSettings JWTSettings;
+        
+        public AuthenticationController(IOptions<JWTSettings> options)
         {
+            JWTSettings = options.Value;
+        }
+        
+        [HttpGet]
+        public IActionResult GetToken(string login, string password)
+        {
+            if (string.IsNullOrEmpty(login))
+            {
+                return BadRequest();
+            }
+            
             var token = GenerateToken();
 
             var returnRes = new
             {
+                Success = false,
                 Token = token
             };
 
@@ -38,7 +53,7 @@ namespace CourseManager.Controllers
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes("1234567890QWERTYKQKPEQLW `l^^>:?LÓ´..Ç'")), SecurityAlgorithms.HmacSha256Signature),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JWTSettings.Secret)), SecurityAlgorithms.HmacSha256Signature),
                 Audience = "https://localhost:5001",
                 Issuer = "CourseManager",
                 Subject = new ClaimsIdentity(claims)

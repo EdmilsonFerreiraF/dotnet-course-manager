@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CourseManager.Settings;
 
 namespace CourseManager
 {
@@ -31,6 +32,9 @@ namespace CourseManager
         {
             services.AddCors();
 
+            var configSection = Configuration.GetSection("JWTSettings");
+            var jwtSettings = configSection.Get<JWTSettings>();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -40,7 +44,7 @@ namespace CourseManager
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("1234567890QWERTYKQKPEQLW `l^^>:?LÓ´..Ç'")),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
                         ValidAudience = "https://localhost:5001",
                         ValidIssuer = "CourseManager"
                     };

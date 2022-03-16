@@ -47,9 +47,10 @@ namespace CourseManager.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet("administrator")]
-        public IActionResult Adminstrator()
+        public IActionResult Administrator()
         {
             return Ok("Administrator with access");
         }
+
     }
 }
