@@ -13,13 +13,6 @@ namespace CourseManager.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Course>(p =>
-            {
-                p.ToTable("Courses");
-                p.HasKey(p => p.Id);
-                p.Property(p => p.Title).HasColumnType("VARCHAR(50)").IsRequired();
-                p.Property(p => p.Duration).IsRequired();
-                p.Property(p => p.Status).HasConversion<string>();
-            })
+            modelBuilder.ApplyConfiguration(new CourseConfiguration().Assembly);
         }
     }
